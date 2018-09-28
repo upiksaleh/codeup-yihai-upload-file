@@ -168,7 +168,7 @@ class FileModel extends \yii\db\ActiveRecord
     public function beforeDelete()
     {
         if (parent::beforeDelete()) {
-            @unlink($this->filename);
+            @unlink(Yii::getAlias($this->filename));
             return true;
         }
         return false;
