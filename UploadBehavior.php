@@ -1,6 +1,12 @@
 <?php
+/**
+ * CodeUP yihai using Yii Framework
+ * @link http://codeup.orangeit.id/yihai
+ * @copyright Copyright (c) 2018 OrangeIT.ID
+ * @author Upik Saleh <upxsal@gmail.com>
+ */
 
-namespace mdm\upload;
+namespace codeup\uploadfile;
 
 use Yii;
 use yii\web\UploadedFile;
@@ -15,7 +21,7 @@ use yii\db\BaseActiveRecord;
  * return [
  *     ...
  *     [
- *         'class' => 'mdm\upload\UploadBehavior',
+ *         'class' => 'codeup\uploadfile\UploadBehavior',
  *         'uploadPath' => '@common/upload', // default to '@runtime/upload'
  *         'attribute' => 'file', // attribute use to receive from FileField
  *         'savedAttribute' => 'file_id', // attribute use to receive id of file
@@ -37,6 +43,8 @@ class UploadBehavior extends \yii\base\Behavior
      */
     public $uploadPath = '@runtime/upload';
 
+    /** @var string group file */
+    public $group = null;
     /**
      * @var string  the attribute that will receive the uploaded file
      */
@@ -53,7 +61,7 @@ class UploadBehavior extends \yii\base\Behavior
      * (usually no bigger than 3). Using sub-directories is mainly to ensure the file system
      * is not over burdened with a single directory having too many files.
      */
-    public $directoryLevel = 1;
+    public $directoryLevel = 0;
 
     /**
      * @var boolean when true `saveUploadedFile()` will be called on event 'beforeSave'
@@ -85,7 +93,7 @@ class UploadBehavior extends \yii\base\Behavior
      */
     public function init()
     {
-        $this->uploadPath = Yii::getAlias($this->uploadPath);
+        //$this->uploadPath = Yii::getAlias($this->uploadPath);
     }
 
     /**
@@ -175,6 +183,7 @@ class UploadBehavior extends \yii\base\Behavior
                 $callback = [$this->owner, $callback];
             }
             $model = FileModel::saveAs($file, [
+                'group' => $this->group,
                 'uploadPath' => $this->uploadPath,
                 'directoryLevel' => $this->directoryLevel,
                 'saveCallback' => $callback,

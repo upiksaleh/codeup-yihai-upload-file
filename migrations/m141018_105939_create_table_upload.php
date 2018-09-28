@@ -1,13 +1,17 @@
 <?php
-
-use yii\db\Migration;
+/**
+ * CodeUP yihai using Yii Framework
+ * @link http://codeup.orangeit.id/yihai
+ * @copyright Copyright (c) 2018 OrangeIT.ID
+ * @author Upik Saleh <upxsal@gmail.com>
+ */
 
 /**
  * Migration table upluad
  * @author Misbahul D Munir <misbahuldmunir@gmail.com>
  * @since 1.0
  */
-class m141018_105939_create_table_upload extends Migration
+class m141018_105939_create_table_upload extends \codeup\base\Migration
 {
 
     /**
@@ -15,18 +19,19 @@ class m141018_105939_create_table_upload extends Migration
      */
     public function safeUp()
     {
-        $tableOptions = null;
-        if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
-        }
 
-        $this->createTable('{{%uploaded_file}}', [
+        $this->createTable('{{%sys_uploaded_file}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(),
             'filename' => $this->string(),
             'size' => $this->integer(),
             'type' => $this->string(64),
-            ], $tableOptions);
+            'group' => $this->string(20),
+            'created_at' => $this->columnCreatedAt(),
+            'created_by' => $this->columnCreatedBy(),
+            'updated_at' => $this->columnUpdatedAt(),
+            'updated_by' => $this->columnUpdatedBy(),
+            ], $this->getTableOptions());
     }
 
     /**
@@ -34,6 +39,6 @@ class m141018_105939_create_table_upload extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%uploaded_file}}');
+        $this->dropTable('{{%sys_uploaded_file}}');
     }
 }

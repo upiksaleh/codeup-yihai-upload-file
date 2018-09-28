@@ -1,6 +1,6 @@
 <?php
 
-namespace mdm\upload;
+namespace codeup\uploadfile;
 
 /**
  * Description of CropAsset
@@ -10,7 +10,7 @@ namespace mdm\upload;
  */
 class CropAsset extends \yii\web\AssetBundle
 {
-    public $sourcePath = '@mdm/upload/assets';
+    public $sourcePath = __DIR__ . '/assets';
     public $js = [
         'http://jcrop-cdn.tapmodo.com/v0.9.12/js/jquery.Jcrop.min.js',
         'js/mdm.cropbox.js'

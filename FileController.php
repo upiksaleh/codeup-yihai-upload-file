@@ -1,6 +1,6 @@
 <?php
 
-namespace mdm\upload;
+namespace codeup\uploadfile;
 
 use Yii;
 use yii\web\NotFoundHttpException;
@@ -10,7 +10,7 @@ use yii\web\NotFoundHttpException;
  * 
  * ~~~
  * 'controllerMap' => [
- *     'file' => 'mdm\upload\FileController',
+ *     'file' => 'codeup\uploadfile\FileController',
  * ],
  * ~~~
  * 

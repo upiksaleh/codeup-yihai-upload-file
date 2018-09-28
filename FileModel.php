@@ -1,6 +1,12 @@
 <?php
+/**
+ * CodeUP yihai using Yii Framework
+ * @link http://codeup.orangeit.id/yihai
+ * @copyright Copyright (c) 2018 OrangeIT.ID
+ * @author Upik Saleh <upxsal@gmail.com>
+ */
 
-namespace mdm\upload;
+namespace codeup\uploadfile;
 
 use Yii;
 use yii\web\UploadedFile;
@@ -12,6 +18,7 @@ use yii\imagine\Image;
  *
  * @property integer $id
  * @property string $name
+ * @property string $group
  * @property string $filename
  * @property integer $size
  * @property string $type
@@ -30,6 +37,7 @@ class FileModel extends \yii\db\ActiveRecord
      * @var UploadedFile 
      */
     public $file;
+
     /**
      * @var string Upload path
      */
@@ -53,7 +61,7 @@ class FileModel extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%uploaded_file}}';
+        return '{{%sys_uploaded_file}}';
     }
 
     /**
@@ -74,7 +82,7 @@ class FileModel extends \yii\db\ActiveRecord
             [['filename'], 'default', 'value' => function() {
                     $level = $this->directoryLevel === null ? static::$defaultDirectoryLevel : $this->directoryLevel;
                     $key = md5(microtime() . $this->file->name);
-                    $base = Yii::getAlias($this->uploadPath);
+                    $base = $this->uploadPath;
                     if ($level > 0) {
                         for ($i = 0; $i < $level; ++$i) {
                             if (($prefix = substr($key, 0, 2)) !== false) {
@@ -86,9 +94,19 @@ class FileModel extends \yii\db\ActiveRecord
                     return $base . DIRECTORY_SEPARATOR . "{$key}_{$this->file->name}";
                 }],
             [['size'], 'integer'],
+            ['group', 'string', 'max' => 20],
+            //['group', 'default', 'value' => $this->group],
             [['name'], 'string', 'max' => 256],
             [['type'], 'string', 'max' => 64],
             [['filename'], 'string', 'max' => 256]
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            '\codeup\behaviors\BlameableGroupBehavior',
+            '\yii\behaviors\TimeStampBehavior'
         ];
     }
 
@@ -102,6 +120,7 @@ class FileModel extends \yii\db\ActiveRecord
             'name' => 'Basename',
             'filename' => 'Filename',
             'size' => 'Filesize',
+            'group' => 'Group',
             'type' => 'Content Type',
         ];
     }
@@ -112,7 +131,8 @@ class FileModel extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         if ($this->file && $this->file instanceof UploadedFile && parent::beforeSave($insert)) {
-            FileHelper::createDirectory(dirname($this->filename));
+            $fullPath = Yii::getAlias($this->filename);
+            FileHelper::createDirectory(dirname($fullPath));
             if ($this->saveCallback !== null) {
                 return call_user_func($this->saveCallback, $this);
             } elseif ($this->cropParam && ($crop = Yii::$app->getRequest()->post($this->cropParam))) {
@@ -120,7 +140,7 @@ class FileModel extends \yii\db\ActiveRecord
             } elseif ($this->resizeParam && ($resize = Yii::$app->getRequest()->post($this->resizeParam))) {
                 return $this->resizeImage($resize);
             } else {
-                return $this->file->saveAs($this->filename, false);
+                return $this->file->saveAs($fullPath, false);
             }
         }
         return false;
@@ -173,5 +193,9 @@ class FileModel extends \yii\db\ActiveRecord
     public function getContent()
     {
         return file_get_contents($this->filename);
+    }
+
+    public function getFilename(){
+        return Yii::getAlias($this->filename);
     }
 }

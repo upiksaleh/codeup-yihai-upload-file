@@ -1,32 +1,25 @@
 {
-    "name": "mdmsoft/yii2-upload-file",
+    "name": "oit/codeup-yihai-upload-file",
     "description": "Yii2 upload file tools",
     "keywords": ["yii", "upload", "file"],
     "type": "yii2-extension",
     "license": "BSD-3-Clause",
-    "support": {
-        "issues": "https://github.com/mdmsoft/yii2-upload-file/issues",
-        "source": "https://github.com/mdmsoft/yii2-upload-file"
-    },
     "authors": [
         {
             "name": "Misbahul Munir",
             "email": "misbahuldmunir@gmail.com"
+        },
+        {
+            "name": "Upik Saleh",
+            "email": "upxsal@gmail.com"
         }
     ],
     "require": {
-        "yiisoft/yii2": "~2.0",
-        "yiisoft/yii2-imagine": "~2.0"
+        "oit/codeup-yihai": "*"
     },
     "autoload": {
         "psr-4": {
-            "mdm\\upload\\": ""
-        }
-    },
-    "extra": {
-        "bootstrap": "mdm\\upload\\Bootstrap",
-        "branch-alias": {
-            "dev-master": "2.x-dev"
+            "codeup\\uploadfile\\": ""
         }
     }
 }
