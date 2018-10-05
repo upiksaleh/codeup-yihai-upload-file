@@ -106,7 +106,7 @@ class FileModel extends \yii\db\ActiveRecord
     {
         return [
             '\codeup\behaviors\BlameableGroupBehavior',
-            '\yii\behaviors\TimeStampBehavior'
+            '\yii\behaviors\TimestampBehavior'
         ];
     }
 
