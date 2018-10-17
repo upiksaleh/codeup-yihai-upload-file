@@ -11,7 +11,7 @@
  * @author Misbahul D Munir <misbahuldmunir@gmail.com>
  * @since 1.0
  */
-class m141018_105939_create_table_upload extends \codeup\base\Migration
+class m000000_000110_create_table_upload extends \codeup\base\Migration
 {
 
     /**
